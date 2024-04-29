@@ -97,27 +97,6 @@ def build_s3_client() -> typing.Any:
 
 if __name__ == "__main__":
 
-    # todo remove this function and its use; it's just for prototyping and shouldn't be in the final code
-    #
-    # def handle_sample_request():
-    #     '''
-    #     {'uid': '96fdf0d0-c4d0-40de-bf9b-fb3de00f61f6', 'episodeId': 28, 'outputUri': 's3://mogul-podcast-episodes/2a553674-5663-4175-8e7b-8e67eb13d7fc/173d0620-d917-44fd-84d9-c69967a4f3c0',
-    #      'segments': [{'index': 0, 's3Uri': 's3://mogul-podcast-episodes/a977015c-2668-459c-b56e-556ccf6bbae3/cac1f3c8-85ab-4cf3-bcc4-b51488888815', 'crossfade': 0}]}
-    #
-    #     '''
-    #     base = os.path.join('podcast-assets-bucket-dev', '062019')
-    #     assets = ['intro.mp3', '1.aiff', '2.aiff', 'music-segue.mp3', '3.aiff', '4.aiff', 'closing.mp3']
-    #     s3_uris = [f's3://{base}/{p}' for p in assets]
-    #     my_uid = str(uuid.uuid4())
-    #     json_request = json.dumps(
-    #         {'segments': s3_uris, 'output_s3_uri': f's3://podcast-output-bucket-dev/{my_uid}/output.mp3'})
-    #     print(json_request)
-    #     # s3 = build_s3_client()
-    #     # handle_podcast_episode_creation_request(s3, json_request, my_uid)
-    #
-    #
-    # handle_sample_request()
-
     def run_flask():
         app = Flask(__name__)
 

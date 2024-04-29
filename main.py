@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import json
-import logging
 import os
 import typing
 import uuid
+from concurrent.futures import ThreadPoolExecutor
+
 import pika
 import boto3
 from flask import Flask
-import threading
 import podcast
 import rmq
 import utils
@@ -173,5 +173,6 @@ if __name__ == "__main__":
         utils.log("Exhausted retry count of %s times." % max_retries)
 
 
-    for f in [run_flask, run_rmq]:
-        threading.Thread(target=f).start()
+    with ThreadPoolExecutor() as executor:
+        for f in [run_flask, run_rmq]:
+            executor.submit(f)

@@ -8,7 +8,7 @@ pytest = "*"
 
 [packages]
 pika = "*"
-boto3 = "*"
+boto3 = "1.34.93"
 pydub = "*"
 requests = "*"
 flask = "*"
@@ -17,7 +17,7 @@ black = "*"
 pika-stubs = "==0.1.3"
 
 [requires]
-python_version = "3.8"
+python_version = "3.12.3"
 
 [pipenv]
 allow_prereleases = true

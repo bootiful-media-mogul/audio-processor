@@ -107,8 +107,8 @@ if __name__ == "__main__":
         utils.log("about to start the Flask service")
         # on my local machine it'll run on 7070, so as to not conflict with the API
         # but in prod it'll run on 7080
-        port = int ( os.environ.get ('SERVER_PORT', '7070'))
-        app.run( port = port )
+        port = int(os.environ.get('SERVER_PORT', '7070'))
+        app.run(port=port)
 
 
     def run_rmq():
@@ -121,14 +121,16 @@ if __name__ == "__main__":
                 requests_q = 'podcast-processor-requests'
 
                 def build_rmq_uri():
-                    rmq_username = os.environ ['RMQ_USERNAME']
-                    rmq_pw = os.environ ['RMQ_PASSWORD']
-                    rmq_host = os.environ ['RMQ_HOST']
-                    rmq_vhost = os.environ ['RMQ_VIRTUAL_HOST']
-                    rmq_address=  f'rmq://{rmq_username}:{rmq_pw}@{rmq_host}/{rmq_vhost}'
+                    print(f'the environment is {os.environ}')
+                    rmq_username = os.environ['RMQ_USERNAME']
+                    rmq_pw = os.environ['RMQ_PASSWORD']
+                    rmq_host = os.environ['RMQ_HOST']
+                    rmq_vhost = os.environ['RMQ_VIRTUAL_HOST']
+                    rmq_address = f'rmq://{rmq_username}:{rmq_pw}@{rmq_host}/{rmq_vhost}'
+                    print(f'RMQ address: {rmq_address}')
                     return rmq_address
 
-                rmq_uri = utils.parse_uri( build_rmq_uri() )
+                rmq_uri = utils.parse_uri(build_rmq_uri())
                 s3 = build_s3_client()
 
                 def handler(properties, json_request) -> str:

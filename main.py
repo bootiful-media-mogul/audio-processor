@@ -137,25 +137,23 @@ if __name__ == "__main__":
                     return handle_podcast_episode_creation_request(
                         s3, properties, json_request, str(uuid.uuid4()))
 
-
-                while True:
-                    try:
-                        utils.log(rmq_uri)
-                        rmq.start_rabbitmq_processor(
-                            requests_q,
-                            rmq_uri["host"],
-                            rmq_uri["username"],
-                            rmq_uri["password"],
-                            rmq_uri["path"],
-                            handler,
-                        )
-                    except Exception as ex:
-                        utils.exception(
-                            ex,
-                            message="There was some sort of error "
-                                    "installing a RabbitMQ listener."
-                                    "Restarting the processor... ",
-                        )
+                try:
+                    utils.log(rmq_uri)
+                    rmq.start_rabbitmq_processor(
+                        requests_q,
+                        rmq_uri["host"],
+                        rmq_uri["username"],
+                        rmq_uri["password"],
+                        rmq_uri["path"],
+                        handler,
+                    )
+                except Exception as ex:
+                    utils.exception(
+                        ex,
+                        message="There was some sort of error "
+                                "installing a RabbitMQ listener."
+                                "Restarting the processor... ",
+                    )
             except Exception as e:
                 utils.exception(
                     e,

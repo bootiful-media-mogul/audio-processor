@@ -12,6 +12,7 @@ import podcast
 import rmq
 import utils
 
+DEBUG = os.environ .get ('DEBUG', 'false') == 'true'
 
 def download(s3, s3p: str, output_file: str) -> str:
     def s3_download(s3, bucket_name: str, key: str, local_fn: str):
@@ -48,7 +49,6 @@ def handle_podcast_episode_creation_request(s3,
                                             properties: pika.BasicProperties,
                                             incoming_json_request: typing.Any,
                                             uid: str):
-    # incoming_json_request = json.loads(request)
     print(f'''incoming request: {incoming_json_request}''')
     output_s3_uri = incoming_json_request['outputS3Uri']
     segments = incoming_json_request['segments']
@@ -67,8 +67,6 @@ def handle_podcast_episode_creation_request(s3,
     bucket, folder, file = s3_parts.split('/')
     s3.meta.client.upload_file(output_podcast_audio_local_fn, bucket, f'{folder}/{file}')
     return {'outputS3Uri': output_s3_uri}
-    # todo upload this back to S3
-
 
 def build_s3_client() -> typing.Any:
     aws_region = os.environ["AWS_REGION"]
@@ -121,13 +119,14 @@ if __name__ == "__main__":
                 requests_q = 'podcast-processor-requests'
 
                 def build_rmq_uri():
-                    print(f'the environment is {os.environ}')
                     rmq_username = os.environ['RMQ_USERNAME']
                     rmq_pw = os.environ['RMQ_PASSWORD']
                     rmq_host = os.environ['RMQ_HOST']
                     rmq_vhost = os.environ['RMQ_VIRTUAL_HOST']
                     rmq_address = f'rmq://{rmq_username}:{rmq_pw}@{rmq_host}/{rmq_vhost}'
-                    print(f'RMQ address: {rmq_address}')
+                    if DEBUG:
+                        print(f'the environment is {os.environ}')
+                        print(f'RMQ address: {rmq_address}')
                     return rmq_address
 
                 rmq_uri = utils.parse_uri(build_rmq_uri())
@@ -138,7 +137,6 @@ if __name__ == "__main__":
                         s3, properties, json_request, str(uuid.uuid4()))
 
                 try:
-                    utils.log(rmq_uri)
                     rmq.start_rabbitmq_processor(
                         requests_q,
                         rmq_uri["host"],

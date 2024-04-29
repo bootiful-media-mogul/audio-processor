@@ -125,7 +125,7 @@ if __name__ == "__main__":
                     rmq_pw = os.environ ['RMQ_PASSWORD']
                     rmq_host = os.environ ['RMQ_HOST']
                     rmq_vhost = os.environ ['RMQ_VIRTUAL_HOST']
-                    rmq_address=  f'rmq://{username}:{password}@{host}/{vhost}'
+                    rmq_address=  f'rmq://{rmq_username}:{rmq_pw}@{rmq_host}/{rmq_vhost}'
                     return rmq_address
 
                 rmq_uri = utils.parse_uri( build_rmq_uri() )

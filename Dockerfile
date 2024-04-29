@@ -37,4 +37,3 @@ COPY . .
 
 # Run the application
 ENTRYPOINT ["./run.sh" ]
-#CMD ["--directory", "directory", "8080"]

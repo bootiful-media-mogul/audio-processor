@@ -137,6 +137,7 @@ if __name__ == "__main__":
                     return handle_podcast_episode_creation_request(
                         s3, properties, json_request, str(uuid.uuid4()))
 
+
                 while True:
                     try:
                         utils.log(rmq_uri)

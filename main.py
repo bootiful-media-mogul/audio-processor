@@ -105,8 +105,10 @@ if __name__ == "__main__":
             return json.dumps({"status": "HODOR"})
 
         utils.log("about to start the Flask service")
-        #  todo does k8s need to know about this port?
-        app.run(port=7070)
+        # on my local machine it'll run on 7070, so as to not conflict with the API
+        # but in prod it'll run on 7080
+        port = int ( os.environ.get ('SERVER_PORT', '7070'))
+        app.run( port = port )
 
 
     def run_rmq():
@@ -117,7 +119,16 @@ if __name__ == "__main__":
                 retry_count += 1
                 utils.log("launching RabbitMQ background thread")
                 requests_q = 'podcast-processor-requests'
-                rmq_uri = utils.parse_uri(os.environ['RMQ_ADDRESS'])
+
+                def build_rmq_uri():
+                    rmq_username = os.environ ['RMQ_USERNAME']
+                    rmq_pw = os.environ ['RMQ_PASSWORD']
+                    rmq_host = os.environ ['RMQ_HOST']
+                    rmq_vhost = os.environ ['RMQ_VIRTUAL_HOST']
+                    rmq_address=  f'rmq://{username}:{password}@{host}/{vhost}'
+                    return rmq_address
+
+                rmq_uri = utils.parse_uri( build_rmq_uri() )
                 s3 = build_s3_client()
 
                 def handler(properties, json_request) -> str:

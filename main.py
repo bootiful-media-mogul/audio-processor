@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
         @app.route("/")
         def hello():
-            return json.dumps({"status": "HODOR"})
+            return json.dumps({"status": "OK"})
 
         utils.log("about to start the Flask service")
         # on my local machine it'll run on 7070, so as to not conflict with the API

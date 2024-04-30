@@ -12,7 +12,7 @@ import podcast
 import rmq
 import utils
 
-DEBUG = os.environ .get ('DEBUG', 'false') == 'true'
+DEBUG = os.environ.get('DEBUG', 'false') == 'true'
 
 def download(s3, s3p: str, output_file: str) -> str:
     def s3_download(s3, bucket_name: str, key: str, local_fn: str):
@@ -49,7 +49,7 @@ def handle_podcast_episode_creation_request(s3,
                                             properties: pika.BasicProperties,
                                             incoming_json_request: typing.Any,
                                             uid: str):
-    print(f'''incoming request: {incoming_json_request}''')
+    utils.log(f'incoming request: {incoming_json_request}')
     output_s3_uri = incoming_json_request['outputS3Uri']
     segments = incoming_json_request['segments']
     segments = [a['s3Uri'] for a in segments]
@@ -57,8 +57,7 @@ def handle_podcast_episode_creation_request(s3,
     os.makedirs(tmp_dir, exist_ok=True)
     local_files = [download(s3, s3_uri, os.path.join(tmp_dir, s3_uri.split('/')[-1])) for s3_uri in segments]
     local_files_segments = [podcast.Segment(lf, os.path.splitext(lf)[1][1:], crossfade_time=100) for lf in local_files]
-    output_podcast_audio_local_fn = podcast.create_podcast(local_files_segments,
-                                                           os.path.join(tmp_dir, 'output.mp3'),
+    output_podcast_audio_local_fn = podcast.create_podcast(local_files_segments, os.path.join(tmp_dir, 'output.mp3'),
                                                            output_extension='mp3')
     utils.log(f'the produced audio is stored locally {output_podcast_audio_local_fn}')
 
@@ -106,6 +105,7 @@ if __name__ == "__main__":
         # on my local machine it'll run on 7070, so as to not conflict with the API
         # but in prod it'll run on 7080
         port = int(os.environ.get('SERVER_PORT', '7070'))
+        utils.log(f"launching Flask thread on port {port}.")
         app.run(port=port)
 
 
@@ -125,8 +125,9 @@ if __name__ == "__main__":
                     rmq_vhost = os.environ['RMQ_VIRTUAL_HOST']
                     rmq_address = f'rmq://{rmq_username}:{rmq_pw}@{rmq_host}/{rmq_vhost}'
                     if DEBUG:
-                        print(f'the environment is {os.environ}')
-                        print(f'RMQ address: {rmq_address}')
+                        for k, v in os.environ.items():
+                            utils.log(f'\t{k} = {v}')
+                        utils.log(f'RMQ address: {rmq_address}')
                     return rmq_address
 
                 rmq_uri = utils.parse_uri(build_rmq_uri())

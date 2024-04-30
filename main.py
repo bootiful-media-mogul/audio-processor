@@ -14,6 +14,7 @@ import utils
 
 DEBUG = os.environ.get('DEBUG', 'false') == 'true'
 
+
 def download(s3, s3p: str, output_file: str) -> str:
     def s3_download(s3, bucket_name: str, key: str, local_fn: str):
         s3.meta.client.download_file(bucket_name, key, local_fn)
@@ -67,6 +68,7 @@ def handle_podcast_episode_creation_request(s3,
     s3.meta.client.upload_file(output_podcast_audio_local_fn, bucket, f'{folder}/{file}')
     return {'outputS3Uri': output_s3_uri}
 
+
 def build_s3_client() -> typing.Any:
     aws_region = os.environ["AWS_REGION"]
     aws_key_id = os.environ['AWS_ACCESS_KEY_ID']
@@ -106,7 +108,7 @@ if __name__ == "__main__":
         # but in prod it'll run on 7080
         port = int(os.environ.get('SERVER_PORT', '7070'))
         utils.log(f"launching Flask thread on port {port}.")
-        app.run(port=port)
+        app.run(host='0.0.0.0', port=port)
 
 
     def run_rmq():

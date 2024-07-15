@@ -17,4 +17,8 @@ ls -la $HOME/.aws/*
 
 cat $HOME/.aws/config
 
+echo $PATH
+which ffprobe
+which ffmpeg
+
 python ${ROOT_DIR}/main.py

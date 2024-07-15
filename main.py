@@ -96,6 +96,8 @@ def build_s3_client() -> typing.Any:
 
 if __name__ == "__main__":
 
+    # where is ffprobe if anywhere
+
     def run_flask():
         app = Flask(__name__)
 

@@ -21,4 +21,4 @@ echo $PATH
 which ffprobe
 which ffmpeg
 # todo restore this or it'll never work again!
-# python ${ROOT_DIR}/main.py
+python ${ROOT_DIR}/main.py

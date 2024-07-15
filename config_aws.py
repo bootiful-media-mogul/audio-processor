@@ -12,14 +12,14 @@ if __name__ == "__main__":
     if not os.path.exists(aws_dir):
         os.makedirs(aws_dir)
 
-    keys = ["AWS_REGION", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
+    keys = ["AWS_REGION", "AWS_ACCESS_KEY_ID", "AWS_ACCESS_KEY_SECRET"]
     for k in keys:
         assert k in os.environ, "the key %s must be found in the environment " % k
 
     ## CREDENTIALS
     aws_region = os.environ["AWS_REGION"]
     aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"]
-    aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"]
+    aws_secret_access_key = os.environ["AWS_ACCESS_KEY_SECRET"]
     tpl = """
 [default]
 aws_access_key_id = %s

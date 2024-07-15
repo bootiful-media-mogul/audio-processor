@@ -58,24 +58,31 @@ def handle_podcast_episode_creation_request(
     s3, properties: pika.BasicProperties, incoming_json_request: typing.Any, uid: str
 ):
     utils.log(f"incoming request: {incoming_json_request}")
+
     output_s3_uri = incoming_json_request["outputS3Uri"]
+
     segments = incoming_json_request["segments"]
     segments = [a["s3Uri"] for a in segments]
+
     tmp_dir = os.path.join(os.environ["HOME"], "podcast-production", uid)
     os.makedirs(tmp_dir, exist_ok=True)
+
     local_files = [
         download(s3, s3_uri, os.path.join(tmp_dir, s3_uri.split("/")[-1]))
         for s3_uri in segments
     ]
+
     local_files_segments = [
         podcast.Segment(lf, os.path.splitext(lf)[1][1:], crossfade_time=100)
         for lf in local_files
     ]
+
     output_podcast_audio_local_fn = podcast.create_podcast(
         local_files_segments,
         os.path.join(tmp_dir, "output.mp3"),
         output_extension="mp3",
     )
+
     utils.log(f"the produced audio is stored locally {output_podcast_audio_local_fn}")
 
     s3_parts = output_s3_uri[len("s3://") :]

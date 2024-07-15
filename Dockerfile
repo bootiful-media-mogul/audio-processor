@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONFAULTHANDLER 1
 
 
-FROM base AS python-deps
+#FROM base AS python-deps
 
 
 
@@ -18,20 +18,22 @@ COPY Pipfile.lock .
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
 
-FROM base AS runtime
+#FROM base AS runtime
 
 # Copy virtual env from python-deps stage
-COPY --from=python-deps /.venv /.venv
+#COPY /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
+
+RUN pip install pipenv
+RUN apt-get update && apt-get install -y --no-install-recommends gcc ca-certificates imagemagick ffmpeg
+RUN which ffmpeg
 
 # Create and switch to a new user
 RUN useradd --create-home appuser
 WORKDIR /home/appuser
 USER appuser
 # Install pipenv and compilation dependencies
-RUN pip install pipenv
-RUN apt-get update && apt-get install -y --no-install-recommends gcc ca-certificates imagemagick ffmpeg
-RUN which ffmpeg
+
 
 
 # Install application into container

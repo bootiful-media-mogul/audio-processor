@@ -4,8 +4,8 @@
 ROOT_DIR=$(dirname $0)
 ROOT_DIR=$(cd ${ROOT_DIR} && pwd)
 echo "ROOT_DIR=${ROOT_DIR}"
-export PATH=$PATH:${ROOT_DIR}/.github/workflows/bin/ffmpeg/
-echo "the PATH is ${PATH}"
+#export PATH=$PATH:${ROOT_DIR}/.github/workflows/bin/ffmpeg/
+echo "the PATH is [ ${PATH} ]"
 
 ffmpeg -version
 
@@ -20,5 +20,5 @@ cat $HOME/.aws/config
 echo $PATH
 which ffprobe
 which ffmpeg
-
-python ${ROOT_DIR}/main.py
+# todo restore this or it'll never work again!
+# python ${ROOT_DIR}/main.py

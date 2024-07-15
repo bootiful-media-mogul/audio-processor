@@ -31,14 +31,14 @@ aws_secret_access_key = %s
 
     ## CONFIG
     tpl = (
-            """
+        """
         [default]
         region = %s
             """.strip()
-            % aws_region
+        % aws_region
     )
     with open(os.path.join(aws_dir, "config"), "w") as fp:
         fp.write(tpl)
 
-    print( '=' * 100)
-    print('access key id: ', aws_access_key_id, 'secret:', aws_secret_access_key)
+    print("=" * 100)
+    print("access key id: ", aws_access_key_id, "secret:", aws_secret_access_key)

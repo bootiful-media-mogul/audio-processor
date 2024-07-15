@@ -24,9 +24,9 @@ def process(fn: types.FunctionType, id_str: str):
 
 
 def parse_uri(uri) -> typing.Dict[str, str]:
-    ' parses a url of the form rmq://user:pw@127.0.0.1/vhost '
+    "parses a url of the form rmq://user:pw@127.0.0.1/vhost"
 
-    print('parsing', uri)
+    print("parsing", uri)
     import urllib.parse
 
     parsed_uri = urllib.parse.urlparse(uri)

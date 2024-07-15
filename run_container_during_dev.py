@@ -50,3 +50,5 @@ envs = [(a, e.replace("localhost", host).replace("127.0.0.1", host)) for (a, e) 
 envs = ["-e %s=%s" % (a, '"%s"' % e) for (a, e) in envs]
 cmd = "docker run %s %s" % (" ".join(envs), container_id)
 print(cmd)
+
+print ('got to go...')

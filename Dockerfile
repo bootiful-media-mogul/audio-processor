@@ -15,7 +15,7 @@ ENV PYTHONFAULTHANDLER 1
 # Install python dependencies in /.venv
 COPY Pipfile .
 COPY Pipfile.lock .
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
+
 
 
 #FROM base AS runtime
@@ -27,6 +27,9 @@ ENV PATH="/.venv/bin:$PATH"
 RUN pip install pipenv
 RUN apt-get update && apt-get install -y --no-install-recommends gcc ca-certificates imagemagick ffmpeg
 RUN which ffmpeg
+
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
+
 
 # Create and switch to a new user
 RUN useradd --create-home appuser

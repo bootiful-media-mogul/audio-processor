@@ -124,7 +124,10 @@ def build_s3_client() -> typing.Any:
 
 if __name__ == "__main__":
 
-    # where is ffprobe if anywhere
+    s3 = build_s3_client()
+    utils.log("---" * 10)
+    utils.log("buckets".upper())
+    utils.log(os.linesep.join(s3.meta.client.list_buckets()))
 
     def run_flask():
         app = Flask(__name__)
@@ -164,7 +167,6 @@ if __name__ == "__main__":
                     return rmq_address
 
                 rmq_uri = utils.parse_uri(build_rmq_uri())
-                s3 = build_s3_client()
 
                 def handler(properties, json_request) -> str:
                     return handle_podcast_episode_creation_request(

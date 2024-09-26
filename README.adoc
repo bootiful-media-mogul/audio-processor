@@ -9,7 +9,6 @@ This module processes media files and turns them into the final, composite audio
 
 == Technical Notes
 
-
 You can run the program by calling `main.py` using Python 3.8 or later.
 
 You can run the Docker image assuming you've got a valid RabbitMQ instance running on your host machine.
